@@ -1,0 +1,114 @@
+.owl-theme .item{
+    position: relative;
+}
+.carousel-caption{
+    position: absolute;
+    left: 60px;
+    text-align: left;
+    width: 42%;
+    top: 15%;
+}
+.carousel-caption p{
+    color: #000;
+    font-weight: 500;
+}
+.carousel-caption .description{
+    color: #9CA2B1;
+    font-weight: 500;
+}
+.carousel-caption h1{
+    font-size: 70px;
+    color:rgb(15,52,96)
+}
+.productImg img{
+    width: 205px;
+}
+.slider .owl-dots{
+    display: none;
+}
+
+/* product slider */
+.productSlider{
+    position: relative;
+}
+.productSlider .owl-next{
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    background: #F5F5F5 !important;
+    box-shadow: 0px 0px 4px #e0e0e0;
+    border-radius: 0;
+}
+.productSlider .owl-prev{
+    position: absolute;
+    top: 50%;
+    left: -12px;
+    background: #F5F5F5 !important;
+    box-shadow: 0px 0px 4px #e0e0e0;
+    border-radius: 0;
+}
+
+.productSlider .owl-next span, .productSlider .owl-prev span{
+    padding: 0px 14px !important;
+    font-size: 30px;
+    color: #4BB4B4;
+}
+
+.imageFooter img{
+    width: 20%;
+    height: 45px;
+}
+.icons svg{
+    padding: 6px;
+    color: #e3e0e0;
+    font-size: 20px;
+    background-color: #6766664f;
+    border-radius: 19px;
+    margin: 0px 5px;
+}
+.loginBox a{
+    margin-right: 10px;
+    text-decoration: none;
+}
+@media(max-width:768px){
+    .carousel-inner{
+        overflow: visible !important;
+    }
+    .carousel-caption{
+        width: auto;
+        left: 0px;
+        text-align: center !important;
+    }
+    .carousel-caption h1{
+        font-size: 40px;
+    }
+    .owl-carousel .owl-item img{
+        height: 75vh;
+        object-fit: cover;
+    }
+    .productImg img{
+        width: 200px;
+    }
+    .carousel-caption .description{
+        margin: 30px;
+    }
+    .productImage img{
+        height: auto !important;
+    }
+    .imageFooter img {
+        width: 45%;
+        height: 50px;
+    }
+}
+@media (min-width:768px){
+    .productImage{
+        position: absolute;
+        top: 19%;
+        left: 7%;
+    }
+    .productImage img{
+        min-height: 350px;
+        max-height: 350px;
+        object-fit: contain;
+    }
+}
