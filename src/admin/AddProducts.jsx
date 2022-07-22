@@ -5,12 +5,19 @@ import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ShowCategory } from "../admin/GetApi";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProducts() {
+    ShowCategory();
+
+    const navigate = useNavigate();
+
   const { register, handleSubmit } = useForm();
-  
+
   const categoryState = store.getState();
   const categoryData = categoryState?.categoryDetails?.cateInfo?.data;
+  const categoryStatus = categoryState?.categoryDetails?.cateInfo?.status;
 
   // add products
   const categoryFormData = (categoryData) => {
@@ -30,11 +37,14 @@ export default function AddProducts() {
       .then((res) => {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
+        navigate("/all-products");
       })
       .catch((error) => {
         toast.error(error.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
       });
   };
@@ -43,7 +53,7 @@ export default function AddProducts() {
   return (
     <>
       <div id="layoutSidenav_content">
-        <h1 className="text-center py-5">Add Products</h1>
+        <h1 className="text-center py-5">Add Product's</h1>
         <main>
           <div className="container col-xl-10 col-xxl-8 px-4">
             <div className="row align-items-center g-lg-5">
@@ -85,13 +95,15 @@ export default function AddProducts() {
                         {...register("category_id")}
                       >
                         <option defaultValue="">Select Category</option>
-                        {categoryData.map((category, index) => {
+                        {categoryStatus != false ?
+                        categoryData.map((category, index) => {
                           return (
                             <option key={index} value={category.id}>
                               {category.category_name}
                             </option>
                           );
-                        })}
+                        }) : <option>No Category Found
+                      </option>}
                       </select>
                     </div>
                   </div>

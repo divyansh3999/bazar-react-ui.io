@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,40 +13,99 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { loginStatus } from "../redux/actions/productAction"
+import { loginStatus, forgotStatus } from "../redux/actions/productAction";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 export default function SignInSide() {
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const addUserData = (loginData) => {
-    console.log(loginData);
     axios
       .post("http://127.0.0.1:8000/api/login", loginData)
       .then((res) => {
-        dispatch(loginStatus(res.data));
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-        toast.success(res.data.message, {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        if (res?.data?.status == true) {
+          dispatch(loginStatus(res.data));
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
+          toast.success(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            pauseOnHover: false,
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            pauseOnHover: false,
+          });
+        }
       })
       .catch((error) => {
         toast.error(error.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
         console.log(error.response.data.message);
       });
   };
 
   const { mutate } = useMutation(addUserData);
+
+  // <--------- forgot password ----------->
+  const afterForgot = useNavigate();
+
+  const {
+    register: registerForgot,
+    handleSubmit: handleSubmitForgot,
+    reset,
+  } = useForm();
+  const forgotDispatch = useDispatch();
+  const forgotPassword = async (forgotData) => {
+    await axios
+      .post("http://127.0.0.1:8000/api/forgot-password", forgotData)
+      .then((response) => {
+        if (response?.data?.status == true) {
+          handleClose();
+          toast.success(response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          let dataDispatch = forgotDispatch(forgotStatus(response));
+          if (dataDispatch) {
+            afterForgot("/reset-password");
+          }
+        } else {
+          toast.error(response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          reset();
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      });
+  };
+  const { mutate: mutateForgot } = useMutation(forgotPassword);
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -125,7 +184,7 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to="/">Forgot password?</Link>
+                  <Button onClick={handleClickOpen}>Forgot password?</Button>
                 </Grid>
                 <Grid item>
                   <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
@@ -135,6 +194,36 @@ export default function SignInSide() {
           </Box>
         </Grid>
       </Grid>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Forgot Password</DialogTitle>
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 1 }}
+          onSubmit={handleSubmitForgot(mutateForgot)}
+        >
+          <DialogContent>
+            <DialogContentText>
+              Don't Worry! Just fill your email and we will help you
+              <br /> to reset your password.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email Address"
+              type="email"
+              fullWidth
+              variant="standard"
+              {...registerForgot("email")}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Send</Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
       <ToastContainer />
     </>
   );

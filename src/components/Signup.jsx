@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IconButton, Input } from "@mui/material";
 import { PhotoCamera } from "@mui/icons-material";
+import "../style.css";
 
 export default function Signup() {
   const { register, handleSubmit } = useForm();
@@ -43,6 +44,7 @@ export default function Signup() {
       .then((res) => {
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
         console.log(res);
         setTimeout(() => {
@@ -52,6 +54,7 @@ export default function Signup() {
       .catch((error) => {
         toast.error(error.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
       });
   };
@@ -121,15 +124,8 @@ export default function Signup() {
                 autoFocus
                 {...register("email")}
               />
-              <label htmlFor="icon-button-file">
-                <Input  id="icon-button-file" name="profile_image" {...register("profile_image")} type="file" />
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="span"
-                >
-                  <PhotoCamera />
-                </IconButton>
+              <label htmlFor="icon-button-file" className="lableImage">
+                <Input  id="icon-button-file" name="profile_image" className="newProfile" margin="normal" {...register("profile_image")} type="file" />
               </label>
               <TextField
                 margin="normal"
@@ -164,17 +160,13 @@ export default function Signup() {
                 {...register("password_confirmation")}
                 autoComplete="confirm-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign Up
               </Button>
               <Grid container>
                 <Grid>

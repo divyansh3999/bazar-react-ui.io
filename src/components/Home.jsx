@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import Carousle from "./Carousle";
 import CarouselTwo from "./CarouselTwo";
 import Category from "./Category";
@@ -10,7 +10,7 @@ import Footer from "./Footer";
 export default function Home() {
   return (
     <>
-         <Navbar />
+      <Navbar />
       <Slider />
       <Category></Category>
       <Carousle></Carousle>
@@ -18,5 +18,5 @@ export default function Home() {
       <AllProducts></AllProducts>
       <Footer></Footer>
     </>
-  )
+  );
 }

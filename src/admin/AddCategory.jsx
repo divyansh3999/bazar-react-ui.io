@@ -2,12 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import axios from "axios";
-import { store } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function AddCategory() { 
   const {register, handleSubmit } = useForm();
+  const navigate = useNavigate();
   const addCategoryData = (categoryData) =>{ 
     const cateFromData = new FormData();
     cateFromData.append("category_name", categoryData.category_name);
@@ -19,10 +20,13 @@ export default function AddCategory() {
     }).then((res) => {
       toast.success(res?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: false,
       });
+      navigate("/all-category");
     }).catch((error)=>{
       toast.error(error?.response?.data?.message, {
         position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: false,
       });
     })
   }
@@ -31,7 +35,7 @@ export default function AddCategory() {
   return (
     <>
       <div id="layoutSidenav_content">
-        <h1 className="text-center py-5">Add Category</h1>
+        <h1 className="text-center py-5">Add Category's</h1>
         <main>
           <div className="container col-xl-10 col-xxl-8 px-4">
             <div className="row align-items-center g-lg-5">

@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { store } from "../../redux/store";
 
 export default function AdminSidebar() {
+  const adminInfo = store.getState();
+  const admin_name = adminInfo?.adminDetails?.adminInfo?.admin?.admin_name;
   return (
     <>
       <div id="layoutSidenav_nav">
@@ -76,6 +79,9 @@ export default function AdminSidebar() {
                   className="sb-sidenav-menu-nested nav accordion"
                   id="sidenavAccordionPages"
                 >
+                  <Link to="/all-category" className="nav-link">
+                    All Category
+                  </Link>
                   <Link to="/add-category" className="nav-link">
                     Add Category
                   </Link>
@@ -92,7 +98,7 @@ export default function AdminSidebar() {
           </div>
           <div className="sb-sidenav-footer">
             <div className="small">Logged in as:</div>
-            Admin
+            {admin_name}
           </div>
         </nav>
       </div>

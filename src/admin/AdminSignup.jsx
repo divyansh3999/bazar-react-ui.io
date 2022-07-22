@@ -25,6 +25,7 @@ export default function AdminSignup() {
     axios.post('http://127.0.0.1:8000/api/admin-signup', data).then((res)=>{
       toast.success(res.data.message, {
         position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: false,
       });
       setTimeout(() => {
         navigate("/admin-login");
@@ -32,6 +33,7 @@ export default function AdminSignup() {
     }).catch((err)=>{
       toast.error(err.response.data.message, {
         position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: false,
       });
     })
   }
@@ -104,12 +106,6 @@ export default function AdminSignup() {
                   {...register('admin_password_confirmation')}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -120,7 +116,7 @@ export default function AdminSignup() {
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              <Grid item className="signup">
                 <Link to="/admin-login" variant="body2">
                   Already have an account? Sign in
                 </Link>

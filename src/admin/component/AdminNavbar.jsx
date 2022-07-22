@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { store } from "../../redux/store";
 
 export default function AdminNavbar() {
+  const adminInfo = store.getState();
+  const admin_name = adminInfo?.adminDetails?.adminInfo?.admin?.admin_name;
+  const admin_email = adminInfo?.adminDetails?.adminInfo?.admin?.admin_email;
   return (
     <>
       <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -44,12 +48,12 @@ export default function AdminNavbar() {
             >
               <li>
                 <a className="dropdown-item" href="#!">
-                  Settings
+                  {admin_name}
                 </a>
               </li>
               <li>
                 <a className="dropdown-item" href="#!">
-                  Activity Log
+                  {admin_email}
                 </a>
               </li>
               <li>

@@ -19,10 +19,29 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { adminStatus } from "../redux/actions/productAction";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import "../style.css";
 
 export default function AdminLogin() {
+  // open modal
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // admin login functionality
   const { register, handleSubmit } = useForm();
   const onLoginHandler = (data) => {
     axios
@@ -31,6 +50,7 @@ export default function AdminLogin() {
         console.log(res);
         toast.success(res.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
         setTimeout(() => {
           dispatch(adminStatus(res.data));
@@ -40,11 +60,46 @@ export default function AdminLogin() {
       .catch((err) => {
         toast.error(err.response.data.message, {
           position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
         });
       });
   };
 
   const { mutate } = useMutation(onLoginHandler);
+
+  // admin reset password functionality
+  const {
+    register: registerAdminForgot,
+    handleSubmit: handleSubmitAdminForgot,
+    reset
+  } = useForm();
+  const onResetPassword = async (adminReset) => {
+    await axios
+      .post("http://127.0.0.1:8000/api/admin-reset-password", adminReset)
+      .then((res) => {
+        if (res?.data?.status == true) {
+          handleClose();
+          reset();
+          toast.success(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            pauseOnHover: false,
+          });
+        } else {
+          toast.error(res.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            pauseOnHover: false,
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: false,
+        });
+      });
+  };
+  const { mutate: mutateAdminForgot } = useMutation(onResetPassword);
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -90,10 +145,6 @@ export default function AdminLogin() {
             autoComplete="current-password"
             {...register("admin_password")}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -104,14 +155,68 @@ export default function AdminLogin() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/admin">Forgot password?</Link>
+              <Button onClick={handleClickOpen} className="reset">
+                Reset password?
+              </Button>
             </Grid>
-            <Grid item>
-              <Link to="/admin-signup">{"Don't have an account? Sign Up"}</Link>
+            <Grid item className="signup">
+              <Link to="/admin-signup">Don't have an account? Sign Up</Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
+
+      <Dialog open={open} onClose={handleClose} className="reset-modal">
+        <DialogTitle>Reset Password</DialogTitle>
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 1 }}
+          onSubmit={handleSubmitAdminForgot(mutateAdminForgot)}
+        >
+          <DialogContent>
+            <DialogContentText>
+              Enter your email to receive a password allowing <br /> you to
+              create a new password.
+            </DialogContentText>
+
+            <TextField
+              autoFocus
+              margin="dense"
+              id="email"
+              label="Email"
+              type="email"
+              fullWidth
+              variant="standard"
+              {...registerAdminForgot("admin_email")}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="password"
+              label="New Password"
+              type="password"
+              fullWidth
+              variant="standard"
+              {...registerAdminForgot("admin_password")}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="password"
+              label="Confirm Password"
+              type="password"
+              fullWidth
+              variant="standard"
+              {...registerAdminForgot("admin_password_confirmation")}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Send</Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
       <ToastContainer />
     </Container>
   );

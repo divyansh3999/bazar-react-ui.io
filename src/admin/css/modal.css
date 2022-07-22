@@ -83,3 +83,9 @@
   display: inline-block;
   margin: 100px auto;
 }
+
+/* update image */
+.product_update_image{
+  width: 120px;
+  border-radius: 50%;
+}

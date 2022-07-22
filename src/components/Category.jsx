@@ -26,11 +26,11 @@ import {
   BrunchDining,
 } from "@mui/icons-material";
 import styled from "@emotion/styled";
+import { store } from "../redux/store";
 
 const CategoryBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.categoryColor.main,
   padding: "20px",
-  
 }));
 const ProductBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.categoryColor.main,
@@ -41,7 +41,7 @@ const ProductBox = styled("div")(({ theme }) => ({
   marginBottom: "20px",
   [theme.breakpoints.down("sm")]: {
     display: "block",
-    textAlign: "center"
+    textAlign: "center",
   },
 }));
 
@@ -49,17 +49,19 @@ const NewProductBox = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.categoryColor.main,
   textAlign: "center",
   padding: "10px 30px",
-  marginBottom: "20px"
+  marginBottom: "20px",
 }));
 
 const BoxDiv = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.categoryColor.main,
   textAlign: "center",
   padding: "10px 30px",
-  marginBottom: "20px"
+  marginBottom: "20px",
 }));
 
 export default function Category() {
+  const category = store.getState();
+  const allCategory = category?.categoryDetails?.cateInfo?.data;
   return (
     <>
       <Box sx={{ padding: "50px 20px" }}>
@@ -124,62 +126,17 @@ export default function Category() {
                   >
                     Top Categories
                   </Typography>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <ChairAltOutlined />
-                      </ListItemIcon>
-                      <ListItemText primary="Chair" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <LivingOutlined />
-                      </ListItemIcon>
-                      <ListItemText primary="Decors" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <Light />
-                      </ListItemIcon>
-                      <ListItemText primary="Interior" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <Weekend />
-                      </ListItemIcon>
-                      <ListItemText primary="Furniture" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <Living />
-                      </ListItemIcon>
-                      <ListItemText primary="Sofa" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <TableBar />
-                      </ListItemIcon>
-                      <ListItemText primary="Stool" />
-                    </ListItemButton>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon sx={{ minWidth: "40px" }}>
-                        <BrunchDining />
-                      </ListItemIcon>
-                      <ListItemText primary="Dining" />
-                    </ListItemButton>
-                  </ListItem>
+                  {allCategory?.map((category, index) => (
+                        <ListItem disablePadding key={index}>
+                          <ListItemButton>
+                            <ListItemIcon sx={{ minWidth: "40px" }}>
+                              <ChairAltOutlined />
+                            </ListItemIcon>
+                            <ListItemText primary={category.category_name} />
+                          </ListItemButton>
+                        </ListItem>
+                    )
+                  )}
                 </List>
               </CategoryBox>
             </Grid>
@@ -255,7 +212,7 @@ export default function Category() {
                   <Typography variant="p" component="p">
                     Modern Furniture
                   </Typography>
-                 
+
                   <Typography variant="h5" component="h5">
                     UP TO 50% OFF
                   </Typography>

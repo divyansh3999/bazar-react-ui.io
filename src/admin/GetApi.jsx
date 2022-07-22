@@ -14,16 +14,3 @@ export const ShowCategory = async() => {
       console.log(err);
     });
 };
-
-// show all products data
-export const ShowProducts = async() => {
-  let dispatchNew = useDispatch();
-  await axios
-    .get("http://127.0.0.1:8000/api/all-products")
-    .then((response) => {
-      dispatchNew(productData(response.data));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};

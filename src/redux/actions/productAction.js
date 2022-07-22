@@ -28,9 +28,50 @@ export const productData = (productInfo) => {
   };
 };
 
-export const removeProduct = (items) => {
+export const forgotStatus = (passwordInfo) => {
   return {
-    type: ActionTypes.PRODUCT_REMOVE_DATA,
-    payload: items
+    type: ActionTypes.FORGOT_PASSWORD,
+    payload: passwordInfo
+  }
+}
+
+export const deleteProduct = (delInfo) => {
+  return {
+    type: ActionTypes.DELETE_PRODUCT,
+    payload: delInfo
+  }
+}
+
+export const logout = () => {
+  return {
+    type: ActionTypes.LOGOUT,
+  };
+};
+
+export const userInformation = (userDetail) => {
+  return {
+    type: ActionTypes.USER_DETAIL,
+    payload: userDetail
+  };
+};
+
+export const cartsInfomation = (cartDetail) => {
+  return {
+    type: ActionTypes.CARTS_DETAIL,
+    payload: cartDetail
+  };
+};
+
+export const cartsItemId = (cartID) => {
+  return {
+    type: ActionTypes.CART_ID,
+    payload: cartID
+  };
+};
+
+export const wishlistInformation = (wishlist) => {
+  return {
+    type: ActionTypes.WISHLIST_INFO,
+    payload: wishlist
   };
 };
